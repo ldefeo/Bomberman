@@ -1,3 +1,5 @@
+use std::str::Chars;
+
 
 #[derive(Debug)]
 pub struct Generador{
@@ -6,15 +8,17 @@ pub struct Generador{
 
 #[derive(Debug,PartialEq)]
 pub enum Objeto{
-    bomba(Bomba),
-    roca(Roca),
-    pared(Pared),
-    vacio(Vacio),
-    enemigo(Enemigo),
+    BombaNormal(BombaNormal),
+    Roca(Roca),
+    Pared(Pared),
+    Vacio(Vacio),
+    Enemigo(Enemigo),
+    Desvio(Desvio),
+    BombaTraspaso(BombaTraspaso),
 }
 
 #[derive(Debug,PartialEq,Clone)]
-pub struct Bomba{
+pub struct BombaNormal{
     identificador: String,
     alcance: usize,
 }
@@ -40,35 +44,51 @@ pub struct Pared{
     identificador: String,
 }
 
+#[derive(Debug,PartialEq)]
+pub struct Desvio{
+    identificador: String,
+    direccion: String,
+}
+
+#[derive(Debug,PartialEq,Clone)]
+pub struct BombaTraspaso{
+    identificador: String,
+    alcance: usize,
+}
+
 impl Objeto{
 
     pub fn matcheo(elemento: String) -> Objeto{
         let mut str_elemento = elemento.chars();
         if elemento.len() == 2{
             match (str_elemento.next(),str_elemento.next()){
-                (Some('B'),_) => {Objeto::bomba(Bomba::generar(elemento))},
-                (Some('F'),_) => {Objeto::enemigo(Enemigo::generar(elemento))},
-                _ => {Objeto::vacio(Vacio::generar(elemento))},
+                (Some('B'),_) => {Objeto::BombaNormal(BombaNormal::generar(elemento))},
+                (Some('F'),_) => {Objeto::Enemigo(Enemigo::generar(elemento))},
+                (Some('D'),_) => {Objeto::Desvio(Desvio::generar(str_elemento))},
+                (Some('S'),_) => {Objeto::BombaTraspaso(BombaTraspaso::generar(elemento))},
+                _ => {Objeto::Vacio(Vacio::generar(elemento))},
             }
         }else{
             match elemento.as_str() {
-                "R" => {Objeto::roca(Roca::generar(elemento))},
-                "W" => {Objeto::pared(Pared::generar(elemento))},
-                _ => {Objeto::vacio(Vacio::generar(elemento))},
+                "R" => {Objeto::Roca(Roca::generar(elemento))},
+                "W" => {Objeto::Pared(Pared::generar(elemento))},
+                _ => {Objeto::Vacio(Vacio::generar(elemento))},
             }
         }
     }
 
 }
 
-impl Bomba{
+impl BombaNormal{
     
     pub fn generar(elemento: String) -> Self{
         let resultado = Generador::dividir_string(&elemento);
         if let Ok((ident,valor)) = resultado {
-            Bomba { identificador: ident, alcance: valor }
+            BombaNormal
+     { identificador: ident, alcance: valor }
         }else{
-            Bomba { identificador: todo!(), alcance: 0 }
+            BombaNormal
+     { identificador: todo!(), alcance: 0 }
         }
     }
 
@@ -78,6 +98,50 @@ impl Bomba{
 
     pub fn alcance(self) -> usize{
         self.alcance
+    }
+
+}
+
+impl BombaTraspaso{
+    
+    pub fn generar(elemento: String) -> Self{
+        let resultado = Generador::dividir_string(&elemento);
+        if let Ok((ident,valor)) = resultado {
+            BombaTraspaso
+     { identificador: ident, alcance: valor }
+        }else{
+            BombaTraspaso
+     { identificador: todo!(), alcance: 0 }
+        }
+    }
+
+    pub fn identificador(self) -> String{
+        self.identificador
+    }
+
+    pub fn alcance(self) -> usize{
+        self.alcance
+    }
+
+}
+
+impl Desvio{
+    
+    pub fn generar(mut elemento: Chars) -> Self{
+        let primer_caracter = elemento.next();
+        let segundo_caracter = elemento.next();
+        match (primer_caracter, segundo_caracter) {
+            (Some(id), Some(dir)) => Desvio { identificador: id.to_string(), direccion: dir.to_string() },
+            _ => Desvio { identificador: "".to_string(), direccion: "".to_string() },
+        }
+    }
+
+    pub fn identificador(self) -> String{
+        self.identificador
+    }
+
+    pub fn alcance(self) -> String{
+        self.direccion
     }
 
 }

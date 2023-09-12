@@ -1,5 +1,5 @@
 
-use crate::generador::{Generador, Objeto, Vacio, Bomba, Enemigo};
+use crate::generador::{Generador, Objeto, Vacio, Enemigo, BombaTraspaso};
 //use crate::movimientos::Movimiento;
 #[derive(Debug,PartialEq)]
 pub struct Laberinto {
@@ -11,7 +11,7 @@ impl Laberinto {
     
 
     pub fn generador_matriz(valor: &str) -> Self{  //generador de matrices
-        let mut datos = Generador::generador_matriz(valor);
+        let datos = Generador::generador_matriz(valor);
         Laberinto { datos }
     }
 
@@ -20,10 +20,13 @@ impl Laberinto {
     }
 
     pub fn atravesar_laberinto(&mut self,coord_x:usize,coord_y:usize) -> &mut Self{
-        let mut matriz_vacia = Laberinto::generador_matriz(" ");
+        let matriz_vacia = Laberinto::generador_matriz(" ");
         if coord_x < self.datos.len() && coord_y < self.datos[coord_x].len() {   //me quedo con el elemento en la coordenada (x,y)
-            if let Objeto::bomba(Bomba) = &self.datos[coord_x][coord_y]{
-                self.detonar(coord_x,coord_y,Bomba.clone().alcance());
+            if let Objeto::BombaNormal(bomba_normal) = &self.datos[coord_x][coord_y]{
+                self.detonar(coord_x,coord_y,bomba_normal.clone().alcance());
+            }
+            if let Objeto::BombaTraspaso(bomba_traspaso) = &self.datos[coord_x][coord_y]{
+                self.detonar(coord_x,coord_y,bomba_traspaso.clone().alcance());
             }
         }else{
             *self = matriz_vacia;
@@ -32,7 +35,7 @@ impl Laberinto {
     }
 
     pub fn detonar(&mut self,coord_x: usize,coord_y: usize, alcance:usize) -> &mut Self{
-        self.datos[coord_x][coord_y] = Objeto::vacio(Vacio::generar("_".to_string()));
+        self.datos[coord_x][coord_y] = Objeto::Vacio(Vacio::generar("_".to_string()));
         self.moverse_izquierda(coord_x,coord_y,alcance);
         self.moverse_abajo(coord_x,coord_y,alcance);
         self.moverse_derecha(coord_x,coord_y,alcance);
@@ -47,17 +50,18 @@ impl Laberinto {
     }
 
     pub fn moverse_izquierda(&mut self,coord_x: usize,coord_y:usize,alcance:usize){
-        let mut finish = self.chequeo_mayor(coord_y,alcance);
+        let finish = self.chequeo_mayor(coord_y,alcance);
         for idy in coord_y..=finish{
             if (coord_x >= 0 && coord_x < self.datos.len()) &&  (idy >= 0 && idy < self.datos[0].len()){
                 match & self.datos[coord_x][idy]{
-                    Objeto::bomba(_box) => {self.detonar(coord_x, idy, _box.clone().alcance());},
-                    Objeto::pared(_box) => {break;},
-                    Objeto::roca(_box) => {break;},
-                    Objeto::enemigo(_box) => {let vidas = _box.clone().alcance()-1;
-                        self.datos[coord_x][idy] = Objeto::enemigo(Enemigo::generar(format!("{}{}",_box.clone().identificador(),vidas)));
+                    Objeto::BombaNormal
+            (_box) => {self.detonar(coord_x, idy, _box.clone().alcance());},
+                    Objeto::Pared(_box) => {break;},
+                    Objeto::Roca(_box) => {break;},
+                    Objeto::Enemigo(_box) => {let vidas = _box.clone().alcance()-1;
+                        self.datos[coord_x][idy] = Objeto::Enemigo(Enemigo::generar(format!("{}{}",_box.clone().identificador(),vidas)));
                     if vidas == 0{
-                        self.datos[coord_x][idy]= Objeto::vacio(Vacio::generar("_".to_string()));
+                        self.datos[coord_x][idy]= Objeto::Vacio(Vacio::generar("_".to_string()));
                     } },
                     _ => {continue;}
                  }
@@ -67,17 +71,18 @@ impl Laberinto {
     }
 
     pub fn moverse_abajo(&mut self,coord_x: usize,coord_y:usize,alcance:usize){
-        let mut finish = self.chequeo_mayor(coord_x,alcance);
+        let finish = self.chequeo_mayor(coord_x,alcance);
         for idx in coord_x..=finish{
             if (idx >= 0 && idx < self.datos.len()) &&  (coord_y >= 0 && coord_y < self.datos[0].len()){
                 match & self.datos[idx][coord_y]{
-                     Objeto::bomba(_box) => {self.detonar(idx, coord_y, _box.clone().alcance());},
-                     Objeto::pared(_box) => {break;},
-                     Objeto::roca(_box) => {break;},
-                     Objeto::enemigo(_box) => {let vidas = _box.clone().alcance()-1;
-                        self.datos[idx][coord_y] = Objeto::enemigo(Enemigo::generar(format!("{}{}",_box.clone().identificador(),vidas)));
+                     Objeto::BombaNormal
+                (_box) => {self.detonar(idx, coord_y, _box.clone().alcance());},
+                     Objeto::Pared(_box) => {break;},
+                     Objeto::Roca(_box) => {break;},
+                     Objeto::Enemigo(_box) => {let vidas = _box.clone().alcance()-1;
+                        self.datos[idx][coord_y] = Objeto::Enemigo(Enemigo::generar(format!("{}{}",_box.clone().identificador(),vidas)));
                     if vidas == 0{
-                        self.datos[idx][coord_y]= Objeto::vacio(Vacio::generar("_".to_string()));
+                        self.datos[idx][coord_y]= Objeto::Vacio(Vacio::generar("_".to_string()));
                     } },
                      _ => {continue;}
                  }
@@ -87,17 +92,18 @@ impl Laberinto {
     }
 
     pub fn moverse_derecha(&mut self,coord_x: usize,coord_y:usize,alcance:usize){
-        let mut start: usize = self.chequeo(coord_x, alcance);
+        let start: usize = self.chequeo(coord_x, alcance);
         for idx in (start..=coord_x).rev(){
             if (idx >= 0 && idx < self.datos.len()) &&  (coord_y >= 0 && coord_y < self.datos[0].len()){
                 match & self.datos[idx][coord_y]{
-                     Objeto::bomba(_box) => {self.detonar(idx, coord_y, _box.clone().alcance());},
-                     Objeto::pared(_box) => {break;},
-                     Objeto::roca(_box) => {break;},
-                     Objeto::enemigo(_box) => {let vidas = _box.clone().alcance()-1;
-                        self.datos[idx][coord_y] = Objeto::enemigo(Enemigo::generar(format!("{}{}",_box.clone().identificador(),vidas)));
+                     Objeto::BombaNormal
+                (_box) => {self.detonar(idx, coord_y, _box.clone().alcance());},
+                     Objeto::Pared(_box) => {break;},
+                     Objeto::Roca(_box) => {break;},
+                     Objeto::Enemigo(_box) => {let vidas = _box.clone().alcance()-1;
+                        self.datos[idx][coord_y] = Objeto::Enemigo(Enemigo::generar(format!("{}{}",_box.clone().identificador(),vidas)));
                     if vidas == 0{
-                        self.datos[idx][coord_y]= Objeto::vacio(Vacio::generar("_".to_string()));
+                        self.datos[idx][coord_y]= Objeto::Vacio(Vacio::generar("_".to_string()));
                     } },
                      _ => {continue;}
                  }
@@ -107,17 +113,18 @@ impl Laberinto {
     }
 
     pub fn moverse_arriba(&mut self,coord_x: usize,coord_y:usize,alcance:usize){
-        let mut start: usize = self.chequeo(coord_y,alcance);
+        let start: usize = self.chequeo(coord_y,alcance);
         for idy in (start..=coord_y).rev(){
             if (coord_x >= 0 && coord_x < self.datos.len()) &&  (idy >= 0 && idy < self.datos[0].len()){
                 match & self.datos[coord_x][idy]{
-                    Objeto::bomba(_box) => {self.detonar(coord_x, idy, _box.clone().alcance());},
-                    Objeto::pared(_box) => {break;},
-                    Objeto::roca(_box) => {break;},
-                    Objeto::enemigo(_box) => {let vidas = _box.clone().alcance()-1;
-                        self.datos[coord_x][coord_y] = Objeto::enemigo(Enemigo::generar(format!("{}{}",_box.clone().identificador(),vidas)));
+                    Objeto::BombaNormal
+            (_box) => {self.detonar(coord_x, idy, _box.clone().alcance());},
+                    Objeto::Pared(_box) => {break;},
+                    Objeto::Roca(_box) => {break;},
+                    Objeto::Enemigo(_box) => {let vidas = _box.clone().alcance()-1;
+                        self.datos[coord_x][coord_y] = Objeto::Enemigo(Enemigo::generar(format!("{}{}",_box.clone().identificador(),vidas)));
                     if vidas == 0{
-                        self.datos[coord_x][idy]= Objeto::vacio(Vacio::generar("_".to_string()));
+                        self.datos[coord_x][idy]= Objeto::Vacio(Vacio::generar("_".to_string()));
                     } },
                     _ => {continue;}
                     }
