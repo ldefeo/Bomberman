@@ -1,4 +1,4 @@
-use crate::generador::Generador;
+use crate::{generador::Generador, laberinto::Laberinto};
 
 
 #[derive(Debug,PartialEq,Clone)]
@@ -34,6 +34,10 @@ impl BombaNormal{
         self.alcance
     }
 
+    pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto:&mut Laberinto){
+        laberinto.detonar(coord_x, coord_y, self.clone().alcance());
+    }
+
 }
 
 impl BombaTraspaso{
@@ -55,6 +59,10 @@ impl BombaTraspaso{
 
     pub fn alcance(self) -> usize{
         self.alcance
+    }
+
+    pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto:&mut Laberinto){
+        laberinto.detonar(coord_x, coord_y, self.clone().alcance());
     }
 
 }

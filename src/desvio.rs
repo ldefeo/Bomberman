@@ -1,3 +1,5 @@
+use crate::{laberinto::Laberinto, movimiento::Movimiento};
+
 
 #[derive(Debug,PartialEq,Clone)]
 pub struct Desvio{
@@ -21,6 +23,12 @@ impl Desvio{
 
     pub fn alcance(self) -> String{
         self.direccion
+    }
+
+    pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto: &mut Laberinto){
+        if alcance_desviado > 1{
+            Movimiento::desviar(self.clone().alcance(),coord_x,coord_y,alcance_desviado,laberinto);
+        }
     }
 
 }

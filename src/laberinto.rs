@@ -32,17 +32,20 @@ impl Laberinto {
         self
     }
 
+    pub fn get_objeto(&mut self, x: usize, y: usize) -> Option<& Objeto> {
+        if x < self.datos.len() && y < self.datos[0].len() {
+            Some(&self.datos[x][y])
+        } else {
+            None
+        }
+    }
+
     pub fn detonar(&mut self,coord_x: usize,coord_y: usize, alcance:usize) -> &mut Self{
         self.datos[coord_x][coord_y] = Objeto::Vacio(Vacio::generar("_".to_string()));
         self.moverse_izquierda(coord_x,coord_y,alcance);
         self.moverse_abajo(coord_x,coord_y,alcance);
         self.moverse_derecha(coord_x,coord_y,alcance);
         self.moverse_arriba(coord_x,coord_y,alcance);
-        //         // Movimiento::moverse(&Movimiento::Abajo,coord_x,coord_y,alcance,self).to_vec();
-        //         // Movimiento::moverse(&Movimiento::Arriba,coord_x,coord_y,alcance,self).to_vec();
-        //         // Movimiento::moverse(&Movimiento::Izquierda,coord_x,coord_y,alcance,self).to_vec();
-        //         // Movimiento::moverse(&Movimiento::Derecha,coord_x,coord_y,alcance,self).to_vec();
-        //      }
         self
         
     }
@@ -52,15 +55,15 @@ impl Laberinto {
     }
 
     pub fn moverse_izquierda(&mut self,coord_x: usize,coord_y: usize,alcance:usize){
-        Movimiento::moverse(&Movimiento::Izquierda, coord_x, coord_y, alcance, self);
+        Movimiento::moverse(&Movimiento::Izquierda, coord_x, coord_y, alcance,self);
     }
 
     pub fn moverse_abajo(&mut self,coord_x: usize,coord_y: usize,alcance:usize){
-        Movimiento::moverse(&Movimiento::Abajo, coord_x, coord_y, alcance, self);
+        Movimiento::moverse(&Movimiento::Abajo, coord_x, coord_y, alcance,self);
     }
 
     pub fn moverse_arriba(&mut self,coord_x: usize,coord_y: usize,alcance:usize){
-        Movimiento::moverse(&Movimiento::Arriba, coord_x, coord_y, alcance, self);
+        Movimiento::moverse(&Movimiento::Arriba, coord_x, coord_y, alcance,self);
     }
 
 //     pub fn moverse_derecha(&mut self,coord_x: usize,coord_y:usize,alcance:usize){

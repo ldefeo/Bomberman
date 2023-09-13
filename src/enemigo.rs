@@ -1,4 +1,4 @@
-use crate::generador::Generador;
+use crate::{generador::Generador, laberinto::Laberinto, vacio::Vacio, objetos::Objeto};
 
 
 #[derive(Debug,PartialEq,Clone)]
@@ -15,7 +15,7 @@ impl Enemigo{
         if let Ok((ident,valor)) = resultado {
             Enemigo { identificador: ident, vidas: valor }
         }else{
-            Enemigo { identificador: todo!(), vidas: 0 }
+            Enemigo { identificador: "_".to_string(), vidas: 0 }
         }
     }
 
@@ -27,4 +27,10 @@ impl Enemigo{
         self.vidas
     }
 
+    pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto:&mut Laberinto){
+        let vidas = self.clone().alcance() - 1;
+        laberinto.datos[coord_x][coord_y] = Objeto::Enemigo(Enemigo::generar(format!("{}{}",self.clone().identificador(),vidas)));
+        if vidas == 0{
+            laberinto.datos[coord_x][coord_y] = Objeto::Vacio(Vacio::generar("_".to_string()));}
+    }
 }
