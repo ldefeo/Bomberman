@@ -1,5 +1,4 @@
-#[derive(Debug,PartialEq,Clone)]
-
+#[derive(Debug,PartialEq)]
 pub enum EstadoBomba{
     Normal,
     Traspaso,
@@ -7,10 +6,10 @@ pub enum EstadoBomba{
 
 impl EstadoBomba{
 
-    pub fn _es_bomba(es_bomba: String) -> i32{
-        match es_bomba{
-            "normal" => {2},
-            "traspaso" => {0},
+    pub fn estado(&self) -> i32{
+        match &self{
+            EstadoBomba::Normal => {1}
+            EstadoBomba::Traspaso => {0}
         }
     }
 

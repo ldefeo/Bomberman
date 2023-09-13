@@ -8,3 +8,5 @@ pub mod enemigo;
 pub mod roca;
 pub mod pared;
 pub mod desvio;
+pub mod rafaga;
+pub mod estado;

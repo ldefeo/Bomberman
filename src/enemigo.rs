@@ -1,4 +1,4 @@
-use crate::{generador::Generador, laberinto::Laberinto, vacio::Vacio, objetos::Objeto};
+use crate::{generador::Generador, laberinto::Laberinto, vacio::Vacio, objetos::Objeto, rafaga::{self, Rafaga}};
 
 
 #[derive(Debug,PartialEq,Clone)]
@@ -28,9 +28,11 @@ impl Enemigo{
     }
 
     pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto:&mut Laberinto){
-        let vidas = self.clone().alcance() - 1;
-        laberinto.datos[coord_x][coord_y] = Objeto::Enemigo(Enemigo::generar(format!("{}{}",self.clone().identificador(),vidas)));
-        if vidas == 0{
-            laberinto.datos[coord_x][coord_y] = Objeto::Vacio(Vacio::generar("_".to_string()));}
+
+            let vidas = self.clone().alcance() - 1;
+            laberinto.datos[coord_x][coord_y] = Objeto::Enemigo(Enemigo::generar(format!("{}{}",self.clone().identificador(),vidas)));
+            if vidas == 0{
+                laberinto.datos[coord_x][coord_y] = Objeto::Vacio(Vacio::generar("_".to_string()));}
+        
     }
 }

@@ -21,8 +21,12 @@ impl Roca{
         0
     }
 
-    pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto:&mut Laberinto){
-        laberinto.datos[coord_x][coord_y] = Objeto::Roca(Roca::generar(self.clone().identificador().to_string()));
+    pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto:&mut Laberinto,estado:i32) -> i32{
+        if estado == 0{
+            0
+        }else{
+            1
+        }
     }
 
 }

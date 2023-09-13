@@ -1,4 +1,4 @@
-use crate::{laberinto::Laberinto, movimiento::Movimiento};
+use crate::{laberinto::Laberinto, movimiento::Movimiento, rafaga::{Rafaga, self}};
 
 
 #[derive(Debug,PartialEq,Clone)]
@@ -25,9 +25,9 @@ impl Desvio{
         self.direccion
     }
 
-    pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto: &mut Laberinto){
+    pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto: &mut Laberinto,estado:i32){
         if alcance_desviado > 1{
-            Movimiento::desviar(self.clone().alcance(),coord_x,coord_y,alcance_desviado,laberinto);
+            Movimiento::desviar(self.clone().alcance(),coord_x,coord_y,alcance_desviado,laberinto,estado);
         }
     }
 
