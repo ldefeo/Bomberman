@@ -1,4 +1,4 @@
-use crate::{bomba::{BombaNormal, BombaTraspaso}, roca::Roca, pared::Pared, vacio::Vacio, enemigo::Enemigo, desvio::Desvio, laberinto::Laberinto, rafaga::Rafaga};
+use crate::{bomba::{BombaNormal, BombaTraspaso}, roca::Roca, pared::Pared, vacio::Vacio, enemigo::Enemigo, desvio::Desvio, laberinto::Laberinto};
 
 
 #[derive(Debug,PartialEq,Clone)]
@@ -34,16 +34,15 @@ impl Objeto{
         }
     }
 
-    pub fn objeto_encontrado(&self,laberinto: &mut Laberinto,coord_x:usize,coord_y:usize,alcance_desviado:usize,estado: i32) -> i32{
+    pub fn objeto_encontrado(&self,laberinto: &mut Laberinto,coord_x:usize,coord_y:usize,alcance_desviado:usize,estado: i32,enemigos_impactados: &mut Vec<(usize,usize)>) -> i32{
         match self{
-            Objeto::BombaNormal(_box) => {BombaNormal::manejar(_box,coord_x, coord_y,alcance_desviado,laberinto);0},
-            Objeto::Roca(_box) => {Roca::manejar(_box,coord_x, coord_y,alcance_desviado,laberinto,estado)},
-            Objeto::Pared(_box) => {Pared::manejar(_box,coord_x, coord_y,alcance_desviado,laberinto);1},
-            Objeto::Vacio(_box) => {Vacio::manejar(_box,coord_x, coord_y,alcance_desviado,laberinto);0},
-            Objeto::Enemigo(_box) => {Enemigo::manejar(_box,coord_x, coord_y,alcance_desviado,laberinto); 0},
-            Objeto::Desvio(_box) => {Desvio::manejar(_box,coord_x,coord_y,alcance_desviado,laberinto,estado);1},
-            Objeto::BombaTraspaso(_box) => {BombaTraspaso::manejar(_box,coord_x, coord_y,alcance_desviado,laberinto); 0}, //me falta la parte de seguir cuando se cruze con roca
-            _ => {-1}                        
+            Objeto::BombaNormal(_box) => {BombaNormal::manejar(_box,coord_x, coord_y,laberinto);0},
+            Objeto::Roca(_box) => {Roca::manejar(estado)},
+            Objeto::Pared(_box) => {Pared::manejar()},
+            Objeto::Vacio(_box) => {Vacio::manejar(_box,coord_x, coord_y,laberinto);0},
+            Objeto::Enemigo(_box) => {Enemigo::manejar(_box,coord_x, coord_y,laberinto,enemigos_impactados); 0},
+            Objeto::Desvio(_box) => {Desvio::manejar(_box,coord_x,coord_y,alcance_desviado,laberinto,estado,enemigos_impactados);1},
+            Objeto::BombaTraspaso(_box) => {BombaTraspaso::manejar(_box,coord_x, coord_y,laberinto); 0}, //me falta la parte de seguir cuando se cruze con roca                     
         }
 
     }

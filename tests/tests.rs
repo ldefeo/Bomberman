@@ -1,7 +1,6 @@
 #[cfg(test)]
 mod tests{
     use Bomberman::laberinto::Laberinto;
-    use super::*;
 
     #[test]
     fn test_matriz_bomba_explota_en_0_0(){
@@ -108,11 +107,25 @@ mod tests{
         assert_eq!(matriz.atravesar_laberinto(1,1),&mut matriz_transformada);
     }
 
-    #[test] // NO ANDA BIEN
-    fn test_matriz_bomba_explota_en_1_1_alcance_4_se_desvia_abajo_y_luego_arriba_y_muere_en_desvio_abajo(){
+    #[test]
+    fn test_matriz_bomba_explota_en_1_0_alcance_5_explota_desviandose_arriba_y_luego_derecha_quita_vida_enemigo_3_desvia_izquierda_y_no_vuelve_a_descontarle_a_enemigo(){
         let mut matriz = Laberinto::generador_matriz("_ DR F3 DL F1\nB5 DU _ _ _\n_ _ _ _ _\n_ _ _ _ _\n_ _ _ _ _");
         let mut matriz_transformada = Laberinto::generador_matriz("_ DR F2 DL F1\n_ DU _ _ _\n_ _ _ _ _\n_ _ _ _ _\n_ _ _ _ _");
         assert_eq!(matriz.atravesar_laberinto(1,0),&mut matriz_transformada);
+    }
+
+    #[test]
+    fn test_matriz_bomba_explota_en_0_1_alcance_5_explota_desviandose_abajo_y_luego_derecha_y_arriba_solo_quita_1_vida_a_enemigo(){
+        let mut matriz = Laberinto::generador_matriz("DD B5 F2\nDR _ DU\n_ _ _");
+        let mut matriz_transformada = Laberinto::generador_matriz("DD _ F1\nDR _ DU\n_ _ _");
+        assert_eq!(matriz.atravesar_laberinto(0,1),&mut matriz_transformada);
+    }
+
+    #[test]
+    fn test_matriz_bomba_explota_en_1_1_alcance_5_explota_desviandose_3_veces_explota_bomba_0_2_matando_a_enemigo(){
+        let mut matriz = Laberinto::generador_matriz("_ _ B1\nDD B5 F2\nDR _ DU");
+        let mut matriz_transformada = Laberinto::generador_matriz("_ _ _\nDD _ _\nDR _ DU");
+        assert_eq!(matriz.atravesar_laberinto(1,1),&mut matriz_transformada);
     }
 
     #[test]
@@ -121,20 +134,6 @@ mod tests{
         let mut matriz_transformada = Laberinto::generador_matriz("_ _ _ _ _\nDR _ DL _ F2\n_ _ _ _ _\n_ _ _ _ _\n_ _ _ _ _");
         assert_eq!(matriz.atravesar_laberinto(1,1),&mut matriz_transformada);
     }
-
-    // #[test] // TIRA OVERFLOW
-    // fn test_matriz_bomba_explota_en_alcance_4_desviandose_muere_entre_los_desvios_derecha_izquierda(){
-    //     let mut matriz = Laberinto::generador_matriz("_ B4 _ _ _\n_ DR DL _ F2\n_ _ _ _ _\n_ _ _ _ _\n_ _ _ _ _");
-    //     let mut matriz_transformada = Laberinto::generador_matriz("_ _ _ _ _\n_ DR DL _ F2\n_ _ _ _ _\n_ _ _ _ _\n_ _ _ _ _");
-    //     assert_eq!(matriz.atravesar_laberinto(0,1),&mut matriz_transformada);
-    // }
-
-    // #[test] // TIRA OVERFLOW
-    // fn test_matriz_bomba_explota_en_alcance_4_desviandose_muere_entre_los_desvios_abajo_arriba(){
-    //     let mut matriz = Laberinto::generador_matriz("_ B4 DD _ _\n_ _ DU _ F2\n_ _ _ _ _\n_ _ _ _ _\n_ _ _ _ _");
-    //     let mut matriz_transformada = Laberinto::generador_matriz("_ _ DD _ _\n_ _ DU _ F2\n_ _ _ _ _\n_ _ _ _ _\n_ _ _ _ _");
-    //     assert_eq!(matriz.atravesar_laberinto(0,1),&mut matriz_transformada);
-    // }
 
     #[test]  
     fn test_matriz_bomba_explota_en_1_1_alcance_2_muere_en_el_desvio(){

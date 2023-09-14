@@ -16,11 +16,7 @@ impl Vacio{
         self.identificador
     }
 
-    pub fn alcance(self) -> usize{
-        0
-    }
-
-    pub fn manejar(&self,coord_x:usize, coord_y:usize,alcance_desviado:usize,laberinto: &mut Laberinto){
+    pub fn manejar(&self,coord_x:usize, coord_y:usize,laberinto: &mut Laberinto){
         laberinto.datos[coord_x][coord_y] = Objeto::Vacio(Vacio::generar("_".to_string()));
     }
 }

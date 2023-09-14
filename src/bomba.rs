@@ -1,5 +1,4 @@
-use crate::{generador::Generador, laberinto::Laberinto, rafaga::Rafaga, estado::EstadoBomba};
-
+use crate::{generador::Generador, laberinto::Laberinto, estado_bomba::EstadoBomba};
 
 #[derive(Debug,PartialEq,Clone)]
 pub struct BombaNormal{
@@ -26,21 +25,21 @@ impl BombaNormal{
         }
     }
 
-    pub fn identificador(self) -> String{
-        self.identificador
+    pub fn identificador(&self) -> &str{
+        &self.identificador
     }
 
-    pub fn alcance(self) -> usize{
+    pub fn alcance(&self) -> usize{
         self.alcance
     }
 
     pub fn estado() -> i32{
-        let mut estado = EstadoBomba::estado(&EstadoBomba::Normal);
-        estado
+        EstadoBomba::estado(&EstadoBomba::Normal)
     }
 
-    pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto:&mut Laberinto){
-        laberinto.detonar(coord_x, coord_y, self.clone().alcance(),BombaNormal::estado());
+    pub fn manejar(&self,coord_x:usize,coord_y:usize,laberinto:&mut Laberinto){
+        let mut enemigos_impactados: Vec<(usize,usize)> = Vec::new();
+        laberinto.detonar(coord_x, coord_y, self.clone().alcance(),BombaNormal::estado(),&mut enemigos_impactados);
     }
 
 }
@@ -58,22 +57,21 @@ impl BombaTraspaso{
         }
     }
 
-    pub fn identificador(self) -> String{
-        self.identificador
+    pub fn identificador(&self) -> &str{
+        &self.identificador
     }
 
-    pub fn alcance(self) -> usize{
+    pub fn alcance(&self) -> usize{
         self.alcance
     }
 
     pub fn estado() -> i32{
-        let mut estado = EstadoBomba::estado(&EstadoBomba::Traspaso);
-        estado
+        EstadoBomba::estado(&EstadoBomba::Traspaso)
     }
 
-    pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto:&mut Laberinto){
-        
-        laberinto.detonar(coord_x, coord_y, self.clone().alcance(),BombaTraspaso::estado());
+    pub fn manejar(&self,coord_x:usize,coord_y:usize,laberinto:&mut Laberinto){
+        let mut enemigos_impactados: Vec<(usize,usize)> = Vec::new();
+        laberinto.detonar(coord_x, coord_y, self.clone().alcance(),BombaTraspaso::estado(),&mut enemigos_impactados);
     }
 
 }

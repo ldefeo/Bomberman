@@ -1,11 +1,9 @@
 
-use crate::{objetos::Objeto};
+use crate::objetos::Objeto;
 
 
 #[derive(Debug)]
-pub struct Generador{
-    matriz: Vec<Vec<String>>,
-}
+pub struct Generador;
 
 
 impl Generador {

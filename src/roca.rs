@@ -1,4 +1,3 @@
-use crate::{laberinto::Laberinto, objetos::Objeto};
 
 
 #[derive(Debug,PartialEq,Clone)]
@@ -21,7 +20,7 @@ impl Roca{
         0
     }
 
-    pub fn manejar(&self,coord_x:usize,coord_y:usize,alcance_desviado:usize,laberinto:&mut Laberinto,estado:i32) -> i32{
+    pub fn manejar(estado:i32) -> i32{
         if estado == 0{
             0
         }else{
