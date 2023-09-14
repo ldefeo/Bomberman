@@ -8,15 +8,13 @@ pub struct Generador;
 
 impl Generador {
     
-    //pub fn generador_matriz(valor: &str) -> Vec<Vec<String>>{  //generador de matrices
-    pub fn generador_matriz(valor: &str) -> Vec<Vec<Objeto>>{
-        //let mut matriz: Vec<Vec<String>> = Vec::new();
+    
+    pub fn generar_matriz(valor: &str) -> Vec<Vec<Objeto>>{ //generador de matrices de objetos
         let mut matriz: Vec<Vec<Objeto>> = Vec::new();
-        for f in valor.split("\n"){    // si el valor contiene \n significa fin de fila
-            //let mut vector_intermedio: Vec<String> = Vec::new(); 
+        for f in valor.split("\n"){ 
             let mut vector_intermedio: Vec<Objeto> = Vec::new();
-            for c in f.split(" "){  // si el valor contiene espacio entre caracteres significa fin de columna
-                vector_intermedio.push(Objeto::matcheo(c.to_string()));
+            for c in f.split(" "){ 
+                vector_intermedio.push(Objeto::matchear_identificador(c.to_string()));
                 //vector_intermedio.push(c.to_string());
             }
             matriz.push(vector_intermedio);

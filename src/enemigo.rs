@@ -7,13 +7,23 @@ pub struct Enemigo{
     vidas: usize,
 }
 
+#[derive(Debug)]
+pub enum EnemigoError {
+    VidasError,
+}
+
 
 impl Enemigo{
     
     pub fn generar(elemento: String) -> Self{
         let resultado = Generador::dividir_string(&elemento);
         if let Ok((ident,valor)) = resultado {
-            Enemigo { identificador: ident, vidas: valor }
+            if valor >= 1 || valor <= 3{
+                Enemigo { identificador: ident, vidas: valor }
+            }else{
+                Enemigo { identificador: "_".to_string(), vidas: 0 }
+            }
+            
         }else{
             Enemigo { identificador: "_".to_string(), vidas: 0 }
         }

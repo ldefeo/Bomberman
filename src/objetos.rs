@@ -15,7 +15,7 @@ pub enum Objeto{
 
 impl Objeto{
 
-    pub fn matcheo(elemento: String) -> Objeto{
+    pub fn matchear_identificador(elemento: String) -> Objeto{
         let mut str_elemento = elemento.chars();
         if elemento.len() == 2{
             match (str_elemento.next(),str_elemento.next()){
