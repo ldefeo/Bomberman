@@ -15,7 +15,6 @@ impl Generador {
             let mut vector_intermedio: Vec<Objeto> = Vec::new();
             for c in f.split(" "){ 
                 vector_intermedio.push(Objeto::matchear_identificador(c.to_string()));
-                //vector_intermedio.push(c.to_string());
             }
             matriz.push(vector_intermedio);
         }

@@ -18,7 +18,7 @@ impl Enemigo{
     pub fn generar(elemento: String) -> Self{
         let resultado = Generador::dividir_string(&elemento);
         if let Ok((ident,valor)) = resultado {
-            if valor >= 1 || valor <= 3{
+            if valor >= 1 || valor <= 3{ //agregar manejo de errores
                 Enemigo { identificador: ident, vidas: valor }
             }else{
                 Enemigo { identificador: "_".to_string(), vidas: 0 }

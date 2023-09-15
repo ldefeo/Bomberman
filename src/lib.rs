@@ -9,3 +9,4 @@ pub mod roca;
 pub mod pared;
 pub mod desvio;
 pub mod estado_bomba;
+pub mod errores;

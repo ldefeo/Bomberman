@@ -1,18 +1,12 @@
 
 use crate::{generador::Generador, movimiento::Movimiento, objetos::Objeto, vacio::Vacio, bomba::{BombaNormal, BombaTraspaso}};
-use std::fmt::Write;
 
 #[derive(Debug,PartialEq,Clone)]
 pub struct Laberinto {
     pub datos: Vec<Vec<Objeto>>,
 }
 
-#[derive(Debug)]
-pub enum LaberintoError {
-    BombNotFound,
-    ObjectNotFound,
-    LaberintoError,
-}
+
 
 impl Laberinto {
     
@@ -28,27 +22,25 @@ impl Laberinto {
 
     
 
-    pub fn atravesar_laberinto(&mut self,coord_x:usize,coord_y:usize) -> Result<&mut Self,String>{ //arreglar el manejo de errores
+    pub fn atravesar_laberinto(&mut self,coord_x:usize,coord_y:usize) -> &mut Self{ //agregar manejo de errores
         if coord_x < self.datos.len() && coord_y < self.datos[coord_x].len() {   //me quedo con el elemento en la coordenada (x,y)
             match self.clone().get_objeto(coord_x, coord_y){
-                Some(objeto) => {let chequeo = self.chequear_bomba(objeto,coord_x,coord_y);if let Ok(_) = chequeo{
-                    Ok(self)
-                }else{Err(LaberintoError::BombNotFound).expect(&format!("No se encontro una bomba en la posicion ({},{})",coord_x,coord_y))}},
-                None => {Err(LaberintoError::ObjectNotFound).expect("Error")},
+                Some(objeto) => {self.chequear_bomba(objeto,coord_x,coord_y);},
+                None => {println!("No se hayo objeto en esa posicion");},
             }
         }else{
-            Err(LaberintoError::LaberintoError).expect("la coordenada no aplica al laberinto")
+            *self = Laberinto { datos: Generador::generar_matriz(" ") };
         }
-
+        self
     }
 
-    pub fn chequear_bomba(&mut self, objeto: &Objeto,coord_x: usize,coord_y: usize) -> Result<&mut Self,LaberintoError>{
+    pub fn chequear_bomba(&mut self, objeto: &Objeto,coord_x: usize,coord_y: usize){
         match objeto {
             Objeto::BombaNormal(_box) => {let mut enemigos_impactados: Vec<(usize,usize)> = Vec::new();
-                self.detonar(coord_x,coord_y,_box.clone().alcance(),BombaNormal::estado(),&mut enemigos_impactados); Ok(self)},
+                self.detonar(coord_x,coord_y,_box.clone().alcance(),BombaNormal::estado(),&mut enemigos_impactados);},
             Objeto::BombaTraspaso(_box) => {let mut enemigos_impactados: Vec<(usize,usize)> = Vec::new();
-                self.detonar(coord_x,coord_y,_box.clone().alcance(),BombaTraspaso::estado(),&mut enemigos_impactados); Ok(self)},
-            _ => {Err(LaberintoError::BombNotFound)},
+                self.detonar(coord_x,coord_y,_box.clone().alcance(),BombaTraspaso::estado(),&mut enemigos_impactados);},
+            _ => {println!("No se hayo una bomba en esa posicion");},
         }
     }
 

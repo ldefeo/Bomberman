@@ -1,5 +1,7 @@
 use crate::{generador::Generador, laberinto::Laberinto, estado_bomba::EstadoBomba};
 
+
+
 #[derive(Debug,PartialEq,Clone)]
 pub struct BombaNormal{
     identificador: String,
@@ -8,8 +10,8 @@ pub struct BombaNormal{
 
 #[derive(Debug,PartialEq,Clone)]
 pub struct BombaTraspaso{
-    pub(crate) identificador: String,
-    pub(crate) alcance: usize,
+    identificador: String,
+    alcance: usize,
 }
 
 impl BombaNormal{
@@ -17,11 +19,11 @@ impl BombaNormal{
     pub fn generar(elemento: String) -> Self{
         let resultado = Generador::dividir_string(&elemento);
         if let Ok((ident,valor)) = resultado {
-            BombaNormal
+           BombaNormal
      { identificador: ident, alcance: valor }
         }else{
             BombaNormal
-     { identificador: todo!(), alcance: 0 }
+     { identificador: todo!(),alcance: 0 }
         }
     }
 

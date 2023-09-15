@@ -34,27 +34,27 @@ impl Movimiento{
         }
     }
 
-       pub fn mover(coord_x: usize,coord_y: usize,alcance: usize,laberinto: &mut Laberinto,dx: isize,dy: isize,estado:i32,enemigos_impactados: &mut Vec<(usize,usize)>) {
-            let (mut x, mut y) = (coord_x as isize, coord_y as isize);
-            let mut alcance_desviado = alcance;
-            while alcance_desviado > 0 {
-                x += dx;
-                y += dy;
-    
-                if x >= 0 && y >= 0 {
-                    if let Some(objeto) = laberinto.clone().get_objeto(x as usize, y as usize) {
-                        let valor_objeto = objeto.objeto_encontrado(laberinto, x as usize, y as usize, alcance_desviado,estado,enemigos_impactados);
-                        if valor_objeto == 1 {
-                            break;
-                        }
+    pub fn mover(coord_x: usize,coord_y: usize,alcance: usize,laberinto: &mut Laberinto,dx: isize,dy: isize,estado:i32,enemigos_impactados: &mut Vec<(usize,usize)>) {
+        let (mut x, mut y) = (coord_x as isize, coord_y as isize);
+        let mut alcance_desviado = alcance;
+        while alcance_desviado > 0 {
+            x += dx;
+            y += dy;
+
+            if x >= 0 && y >= 0 {
+                if let Some(objeto) = laberinto.clone().get_objeto(x as usize, y as usize) {
+                    let valor_objeto = objeto.objeto_encontrado(laberinto, x as usize, y as usize, alcance_desviado,estado,enemigos_impactados);
+                    if valor_objeto == 1 {
+                        break;
                     }
-                } else {
-                    break; // Salir si se sale del laberinto
                 }
-    
-                alcance_desviado -= 1;
+            } else {
+                break; // Salir si se sale del laberinto
             }
+
+            alcance_desviado -= 1;
         }
+    }
 
 }
 
