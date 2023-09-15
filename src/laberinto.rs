@@ -23,7 +23,7 @@ impl Laberinto {
     
 
     pub fn atravesar_laberinto(&mut self,coord_x:usize,coord_y:usize) -> &mut Self{ //agregar manejo de errores
-        if coord_x < self.datos.len() && coord_y < self.datos[coord_x].len() {   //me quedo con el elemento en la coordenada (x,y)
+        if coord_y < self.datos.len() && coord_x < self.datos[coord_y].len() {   //me quedo con el elemento en la coordenada (x,y)
             match self.clone().get_objeto(coord_x, coord_y){
                 Some(objeto) => {self.chequear_bomba(objeto,coord_x,coord_y);},
                 None => {println!("No se hayo objeto en esa posicion");},
@@ -46,15 +46,15 @@ impl Laberinto {
 
 
     pub fn get_objeto(&mut self, x: usize, y: usize) -> Option<& Objeto> {
-        if x < self.datos.len() && y < self.datos[0].len() {
-            Some(&self.datos[x][y])
+        if y < self.datos.len() && x < self.datos[0].len() {
+            Some(&self.datos[y][x])
         } else {
             None
         }
     }
 
     pub fn detonar(&mut self,coord_x: usize,coord_y: usize, alcance:usize,estado: i32,enemigos_impactados:&mut Vec<(usize,usize)>) -> &mut Self{
-        self.datos[coord_x][coord_y] = Objeto::Vacio(Vacio::generar("_".to_string()));
+        self.datos[coord_y][coord_x] = Objeto::Vacio(Vacio::generar("_".to_string()));
         self.moverse_izquierda(coord_x,coord_y,alcance,estado,enemigos_impactados);
         self.moverse_abajo(coord_x,coord_y,alcance,estado,enemigos_impactados);
         self.moverse_derecha(coord_x,coord_y,alcance,estado,enemigos_impactados);

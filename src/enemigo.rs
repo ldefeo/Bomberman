@@ -39,12 +39,12 @@ impl Enemigo{
 
     pub fn manejar(&self,coord_x:usize,coord_y:usize,laberinto:&mut Laberinto,enemigos_impactados: &mut Vec<(usize,usize)>){
         
-        if !enemigos_impactados.contains(&(coord_x,coord_y)){
-            enemigos_impactados.push((coord_x,coord_y));
+        if !enemigos_impactados.contains(&(coord_y,coord_x)){
+            enemigos_impactados.push((coord_y,coord_x));
             let vidas = self.clone().vidas() - 1;
-            laberinto.datos[coord_x][coord_y] = Objeto::Enemigo(Enemigo::generar(format!("{}{}",self.clone().identificador(),vidas)));
+            laberinto.datos[coord_y][coord_x] = Objeto::Enemigo(Enemigo::generar(format!("{}{}",self.clone().identificador(),vidas)));
             if vidas == 0{
-                laberinto.datos[coord_x][coord_y] = Objeto::Vacio(Vacio::generar("_".to_string()));}
+                laberinto.datos[coord_y][coord_x] = Objeto::Vacio(Vacio::generar("_".to_string()));}
         }
             
         
