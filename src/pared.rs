@@ -1,21 +1,20 @@
-
-#[derive(Debug,PartialEq,Clone)]
-pub struct Pared{
+#[derive(Debug, PartialEq, Clone)]
+pub struct Pared {
     identificador: String,
 }
 
-impl Pared{
-    
-    pub fn generar(elemento: String) -> Self{
-        Pared { identificador:elemento }
-
+impl Pared {
+    pub fn generar(elemento: String) -> Self {
+        Pared {
+            identificador: elemento,
+        }
     }
 
-    pub fn identificador(self) -> String{
+    pub fn identificador(self) -> String {
         self.identificador
     }
 
-    pub fn manejar() -> i32{
+    pub fn manejar() -> i32 {
         1
     }
 }
