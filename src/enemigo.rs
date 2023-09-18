@@ -12,6 +12,7 @@ pub enum EnemigoError {
 }
 
 impl Enemigo {
+    /// Generador de un enemigo, con las vidas entre 1 y 3
     pub fn generar(elemento: String) -> Self {
         let mut valor = 0;
         let resultado = Generador::dividir_string(&elemento);
@@ -32,6 +33,7 @@ impl Enemigo {
         self.vidas
     }
 
+    /// Esta funcion maneja el impacto de la bomba contra el enemigo descontando sus vidas y eliminandolo si su vida llega a 0
     pub fn manejar(
         &self,
         coord_x: usize,

@@ -2,6 +2,7 @@ use crate::laberinto::Laberinto;
 
 #[derive(Debug, PartialEq)]
 pub enum Movimiento {
+    /// enumerable de movimientos.
     Derecha,
     Izquierda,
     Abajo,
@@ -9,6 +10,7 @@ pub enum Movimiento {
 }
 
 impl Movimiento {
+    /// Esta funcion sirve para matchear el movimiento que se debe realizar.
     pub fn moverse(
         &self,
         coord_x: usize,
@@ -70,6 +72,7 @@ impl Movimiento {
         }
     }
 
+    /// Esta funcion sirve para hacer el desvio segun la direccion recibida.
     pub fn desviar(
         direccion: String,
         coord_x: usize,
@@ -128,6 +131,10 @@ impl Movimiento {
         }
     }
 
+    /// Esta funcion se utiliza para realizar el movimiento, es generalizada para cada movimiento.
+    /// Si el alcance de la bomba se termina, entonces se termina el movimiento.
+    /// Segun los valores de dx y dy es para donde se mueve.
+    /// En cada posicion va buscando el objeto que ahi se encuentra.
     pub fn mover(
         coord_x: usize,
         coord_y: usize,
@@ -158,7 +165,7 @@ impl Movimiento {
                     }
                 }
             } else {
-                break; // Salir si se sale del laberinto
+                break;
             }
             alcance_desviado -= 1;
         }

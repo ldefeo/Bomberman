@@ -13,6 +13,7 @@ pub struct BombaTraspaso {
 }
 
 impl BombaNormal {
+    /// Generador de una bomba de tipo normal
     pub fn generar(elemento: String) -> Self {
         let resultado = Generador::dividir_string(&elemento);
         BombaNormal {
@@ -29,10 +30,12 @@ impl BombaNormal {
         self.alcance
     }
 
+    /// Estado de una bomba de tipo normal
     pub fn estado() -> i32 {
         EstadoBomba::estado(&EstadoBomba::Normal)
     }
 
+    /// Esta funcion genera una lista de enemigos impactados y detona la bomba
     pub fn manejar(&self, coord_x: usize, coord_y: usize, laberinto: &mut Laberinto) {
         let mut enemigos_impactados: Vec<(usize, usize)> = Vec::new();
         laberinto.detonar(
@@ -46,6 +49,7 @@ impl BombaNormal {
 }
 
 impl BombaTraspaso {
+    /// Generador de una bomba de tipo traspaso
     pub fn generar(elemento: String) -> Self {
         let resultado = Generador::dividir_string(&elemento);
         BombaTraspaso {
@@ -62,10 +66,12 @@ impl BombaTraspaso {
         self.alcance
     }
 
+    /// Estado de una bomba de tipo traspaso
     pub fn estado() -> i32 {
         EstadoBomba::estado(&EstadoBomba::Traspaso)
     }
 
+    /// Esta funcion genera una lista de enemigos impactados y detona la bomba
     pub fn manejar(&self, coord_x: usize, coord_y: usize, laberinto: &mut Laberinto) {
         let mut enemigos_impactados: Vec<(usize, usize)> = Vec::new();
         laberinto.detonar(

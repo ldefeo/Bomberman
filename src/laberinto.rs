@@ -8,12 +8,13 @@ use crate::{
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Laberinto {
+    /// Estructura laberinto con una matriz de objetos como atributo
     pub datos: Vec<Vec<Objeto>>,
 }
 
 impl Laberinto {
+    /// Genera el laberinto utilizando al Generador para obtener la matriz de objetos.
     pub fn generar_laberinto(matriz: &str) -> Self {
-        //generador de laberintos
         let datos = Generador::generar_matriz_objetos(matriz);
         Laberinto { datos }
     }
@@ -22,6 +23,8 @@ impl Laberinto {
         self.datos
     }
 
+    /// Esta funcion se fija si la coordenada recibida esta entre los parametros del laberinto.
+    /// Luego chequea si hay una bomba en esa coordenada y sino devuelve un error.
     pub fn atravesar_laberinto(
         &mut self,
         coord_x: usize,
@@ -46,11 +49,13 @@ impl Laberinto {
         }
     }
 
+    /// Me devuelve la matriz de strings generada por el Generador (seria el laberinto finalizado)
     pub fn escribir_laberinto(&mut self) -> Vec<Vec<String>> {
         let matriz = Generador::generar_matriz(&mut self.datos);
         matriz
     }
 
+    /// Esta funcion matchea el objeto que hay en la coordenada provista, si hay bomba entonces la detona devolviendo true, sino devuelve false.
     pub fn chequear_bomba(&mut self, objeto: &Objeto, coord_x: usize, coord_y: usize) -> usize {
         match objeto {
             Objeto::BombaNormal(_box) => {
@@ -79,6 +84,7 @@ impl Laberinto {
         }
     }
 
+    /// Esta funcion obtiene el objeto que hay en determinada coordenada
     pub fn get_objeto(&mut self, x: usize, y: usize) -> Option<&Objeto> {
         if y < self.datos.len() && x < self.datos[0].len() {
             Some(&self.datos[y][x])
@@ -87,6 +93,7 @@ impl Laberinto {
         }
     }
 
+    /// Funcion para detonar la bomba moviendose en todas las direcciones.
     pub fn detonar(
         &mut self,
         coord_x: usize,
@@ -103,6 +110,7 @@ impl Laberinto {
         self
     }
 
+    /// Se mueve en direccion derecha utilizando el enumerable Movimiento
     pub fn moverse_derecha(
         &mut self,
         coord_x: usize,
@@ -122,6 +130,7 @@ impl Laberinto {
         );
     }
 
+    /// Se mueve en direccion izquierda utilizando el enumerable Movimiento
     pub fn moverse_izquierda(
         &mut self,
         coord_x: usize,
@@ -141,6 +150,7 @@ impl Laberinto {
         );
     }
 
+    /// Se mueve en direccion abajo utilizando el enumerable Movimiento
     pub fn moverse_abajo(
         &mut self,
         coord_x: usize,
@@ -160,6 +170,7 @@ impl Laberinto {
         );
     }
 
+    /// Se mueve en direccion arriba utilizando el enumerable Movimiento
     pub fn moverse_arriba(
         &mut self,
         coord_x: usize,

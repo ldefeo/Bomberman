@@ -4,6 +4,7 @@ pub struct Pared {
 }
 
 impl Pared {
+    /// Generador de pared
     pub fn generar(elemento: String) -> Self {
         Pared {
             identificador: elemento,
@@ -14,6 +15,7 @@ impl Pared {
         self.identificador
     }
 
+    /// Frena la detonacion
     pub fn manejar() -> i32 {
         1
     }

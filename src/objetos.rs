@@ -10,6 +10,7 @@ use crate::{
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Objeto {
+    /// enumerable de objetos
     BombaNormal(BombaNormal),
     Roca(Roca),
     Pared(Pared),
@@ -20,6 +21,7 @@ pub enum Objeto {
 }
 
 impl Objeto {
+    /// Segun el string que recibe, matchea y genera el Objeto.
     pub fn matchear_identificador(elemento: String) -> Objeto {
         let mut str_elemento = elemento.chars();
         if elemento.len() == 2 {
@@ -39,6 +41,9 @@ impl Objeto {
         }
     }
 
+    /// Esta funcion se utiliza para encontrar el objeto que hay en determinada posicion.
+    /// Cada objeto maneja diferente la detonacion de la bomba: una bomba se detona, una roca frena o no la detonacion (segun la bomba), un desvio
+    /// desvia la detonacion, etc.
     pub fn objeto_encontrado(
         &self,
         laberinto: &mut Laberinto,
@@ -78,18 +83,15 @@ impl Objeto {
             Objeto::BombaTraspaso(_box) => {
                 BombaTraspaso::manejar(_box, coord_x, coord_y, laberinto);
                 0
-            } //me falta la parte de seguir cuando se cruze con roca
+            }
         }
     }
 
-    pub fn matchear_objeto_laberinto(&self) -> String{
+    /// Esta funcion matchea el objeto del laberinto y formatea su firma (hace el proceso inverso a matchear_identificador()).
+    pub fn matchear_objeto_laberinto(&self) -> String {
         match &self {
             Objeto::BombaNormal(_box) => {
-                format!(
-                    "{}{}",
-                    _box.clone().identificador(),
-                    _box.clone().alcance()
-                )
+                format!("{}{}", _box.clone().identificador(), _box.clone().alcance())
             }
             Objeto::Roca(_box) => {
                 format!("{}", _box.clone().identificador())
@@ -101,11 +103,7 @@ impl Objeto {
                 format!("{}", _box.clone().identificador())
             }
             Objeto::Enemigo(_box) => {
-                format!(
-                    "{}{}",
-                    _box.clone().identificador(),
-                    _box.clone().vidas()
-                )
+                format!("{}{}", _box.clone().identificador(), _box.clone().vidas())
             }
             Objeto::Desvio(_box) => {
                 format!(
@@ -115,11 +113,7 @@ impl Objeto {
                 )
             }
             Objeto::BombaTraspaso(_box) => {
-                format!(
-                    "{}{}",
-                    _box.clone().identificador(),
-                    _box.clone().alcance()
-                )
+                format!("{}{}", _box.clone().identificador(), _box.clone().alcance())
             }
         }
     }

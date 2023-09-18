@@ -7,6 +7,7 @@ pub struct Desvio {
 }
 
 impl Desvio {
+    /// Generador de desvio con su identificador y su direccion de desvio
     pub fn generar(elemento: String) -> Self {
         let mut elemento_modificado = elemento.chars();
         match (elemento_modificado.next(), elemento_modificado.next()) {
@@ -29,6 +30,7 @@ impl Desvio {
         self.direccion
     }
 
+    /// Esta funcion maneja el desvio mandando la nueva direccion del recorrido, si el alcance de la bomba no se termino.
     pub fn manejar(
         &self,
         coord_x: usize,
