@@ -34,13 +34,14 @@ impl Generador {
     }
 
     /// Esta funcion divide el string que recibe en parte string parte usize
-    pub fn dividir_string(valor: &String) -> (String, usize) {
+    pub fn dividir_string(valor: &str) -> (String, usize) {
         let (identificador, numero): (String, String) =
             valor.chars().partition(|&c| c.is_alphabetic());
 
         let num = match numero.parse::<usize>() {
             Ok(parsed_num) => parsed_num,
-            Err(_) => 0,
+            Err(_) => {eprintln!("ERROR: mal parseo del numero");
+            0},
         };
 
         (identificador, num)

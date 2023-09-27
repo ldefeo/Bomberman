@@ -45,34 +45,31 @@ impl Objeto {
     /// Cada objeto maneja diferente la detonacion de la bomba: una bomba se detona, una roca frena o no la detonacion (segun la bomba), un desvio
     /// desvia la detonacion, etc.
     pub fn objeto_encontrado(
-        &self,
         laberinto: &mut Laberinto,
-        coord_x: usize,
-        coord_y: usize,
+        posicion: (usize,usize),
         alcance_desviado: usize,
         estado: i32,
         enemigos_impactados: &mut Vec<(usize, usize)>,
     ) -> i32 {
-        match self {
+        match &laberinto.datos[posicion.1][posicion.0] {
             Objeto::BombaNormal(_box) => {
-                BombaNormal::manejar(_box, coord_x, coord_y, laberinto);
+                BombaNormal::manejar(_box.clone(), posicion, laberinto);
                 0
             }
             Objeto::Roca(_box) => Roca::manejar(estado),
             Objeto::Pared(_box) => Pared::manejar(),
             Objeto::Vacio(_box) => {
-                Vacio::manejar(_box, coord_x, coord_y, laberinto);
+                Vacio::manejar(posicion, laberinto);
                 0
             }
             Objeto::Enemigo(_box) => {
-                Enemigo::manejar(_box, coord_x, coord_y, laberinto, enemigos_impactados);
+                Enemigo::manejar(_box.clone(), posicion, laberinto, enemigos_impactados);
                 0
             }
             Objeto::Desvio(_box) => {
                 Desvio::manejar(
-                    _box,
-                    coord_x,
-                    coord_y,
+                    _box.clone(),
+                    posicion,
                     alcance_desviado,
                     laberinto,
                     estado,
@@ -81,7 +78,7 @@ impl Objeto {
                 1
             }
             Objeto::BombaTraspaso(_box) => {
-                BombaTraspaso::manejar(_box, coord_x, coord_y, laberinto);
+                BombaTraspaso::manejar(_box.clone(), posicion, laberinto);
                 0
             }
         }
@@ -94,13 +91,13 @@ impl Objeto {
                 format!("{}{}", _box.clone().identificador(), _box.clone().alcance())
             }
             Objeto::Roca(_box) => {
-                format!("{}", _box.clone().identificador())
+                _box.clone().identificador().to_string()
             }
             Objeto::Pared(_box) => {
-                format!("{}", _box.clone().identificador())
+                 _box.clone().identificador().to_string()
             }
             Objeto::Vacio(_box) => {
-                format!("{}", _box.clone().identificador())
+                _box.clone().identificador().to_string()
             }
             Objeto::Enemigo(_box) => {
                 format!("{}{}", _box.clone().identificador(), _box.clone().vidas())

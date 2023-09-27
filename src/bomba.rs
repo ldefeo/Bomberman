@@ -36,14 +36,11 @@ impl BombaNormal {
     }
 
     /// Esta funcion genera una lista de enemigos impactados y detona la bomba
-    pub fn manejar(&self, coord_x: usize, coord_y: usize, laberinto: &mut Laberinto) {
-        let mut enemigos_impactados: Vec<(usize, usize)> = Vec::new();
+    pub fn manejar(self, posicion: (usize,usize), laberinto: &mut Laberinto) {
         laberinto.detonar(
-            coord_x,
-            coord_y,
+            posicion,
             self.clone().alcance(),
             BombaNormal::estado(),
-            &mut enemigos_impactados,
         );
     }
 }
@@ -72,14 +69,11 @@ impl BombaTraspaso {
     }
 
     /// Esta funcion genera una lista de enemigos impactados y detona la bomba
-    pub fn manejar(&self, coord_x: usize, coord_y: usize, laberinto: &mut Laberinto) {
-        let mut enemigos_impactados: Vec<(usize, usize)> = Vec::new();
+    pub fn manejar(self, posicion: (usize,usize), laberinto: &mut Laberinto) {
         laberinto.detonar(
-            coord_x,
-            coord_y,
+            posicion,
             self.clone().alcance(),
             BombaTraspaso::estado(),
-            &mut enemigos_impactados,
         );
     }
 }

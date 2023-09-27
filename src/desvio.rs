@@ -1,4 +1,4 @@
-use crate::{laberinto::Laberinto, movimiento::Movimiento};
+use crate::{laberinto::Laberinto, movimiento::Direccion};
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Desvio {
@@ -32,20 +32,18 @@ impl Desvio {
 
     /// Esta funcion maneja el desvio mandando la nueva direccion del recorrido, si el alcance de la bomba no se termino.
     pub fn manejar(
-        &self,
-        coord_x: usize,
-        coord_y: usize,
+        self,
+        posicion: (usize,usize),
         alcance_desviado: usize,
         laberinto: &mut Laberinto,
         estado: i32,
         enemigos_impactados: &mut Vec<(usize, usize)>,
     ) {
         if alcance_desviado > 1 {
-            Movimiento::desviar(
+            Direccion::desviarse(
                 self.clone().direccion(),
-                coord_x,
-                coord_y,
-                alcance_desviado,
+                posicion,
+                alcance_desviado-1,
                 laberinto,
                 estado,
                 enemigos_impactados,

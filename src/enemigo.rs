@@ -35,22 +35,21 @@ impl Enemigo {
 
     /// Esta funcion maneja el impacto de la bomba contra el enemigo descontando sus vidas y eliminandolo si su vida llega a 0
     pub fn manejar(
-        &self,
-        coord_x: usize,
-        coord_y: usize,
+        self,
+        posicion: (usize,usize),
         laberinto: &mut Laberinto,
         enemigos_impactados: &mut Vec<(usize, usize)>,
     ) {
-        if !enemigos_impactados.contains(&(coord_y, coord_x)) {
-            enemigos_impactados.push((coord_y, coord_x));
+        if !enemigos_impactados.contains(&(posicion.1, posicion.0)) {
+            enemigos_impactados.push((posicion.1, posicion.0));
             let vidas = self.clone().vidas() - 1;
-            laberinto.datos[coord_y][coord_x] = Objeto::Enemigo(Enemigo::generar(format!(
+            laberinto.datos[posicion.1][posicion.0] = Objeto::Enemigo(Enemigo::generar(format!(
                 "{}{}",
                 self.clone().identificador(),
                 vidas
             )));
             if vidas == 0 {
-                laberinto.datos[coord_y][coord_x] = Objeto::Vacio(Vacio::generar("_".to_string()));
+                laberinto.datos[posicion.1][posicion.0] = Objeto::Vacio(Vacio::generar("_".to_string()));
             }
         }
     }

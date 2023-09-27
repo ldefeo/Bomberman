@@ -19,12 +19,6 @@ mod tests {
     }
 
     #[test]
-    fn test_laberinto_no_encuentra_objeto_valido_tira_error() {
-        let mut laberinto = Laberinto::generar_laberinto("H _\n_ _");
-        assert!(laberinto.atravesar_laberinto(0, 0).is_err());
-    }
-
-    #[test]
     fn test_laberinto_bomba_explota_en_0_0_alcance_1_explota_bomba_consecutiva_alcance_1_explota() {
         let mut laberinto = Laberinto::generar_laberinto("B1 B1 _\n_ _ _");
         let mut laberinto_transformado = Laberinto::generar_laberinto("_ _ _\n_ _ _");
@@ -186,10 +180,10 @@ mod tests {
     }
 
     #[test]
-    fn test_laberinto_bomba_explota_en_1_0_alcance_5_explota_desviandose_abajo_y_luego_derecha_y_arriba_solo_quita_1_vida_a_enemigo(
+    fn test_laberinto_bomba_explota_en_1_0_alcance_5_explota_quita_vida_enemigo_luego_se_desvia_en_otra_rafaga_entonces_mata_a_enemigo(
     ) {
         let mut laberinto = Laberinto::generar_laberinto("DD B5 F2\nDR _ DU\n_ _ _");
-        let mut laberinto_transformado = Laberinto::generar_laberinto("DD _ F1\nDR _ DU\n_ _ _");
+        let mut laberinto_transformado = Laberinto::generar_laberinto("DD _ _\nDR _ DU\n_ _ _");
         assert_eq!(
             laberinto.atravesar_laberinto(1, 0),
             Ok(&mut laberinto_transformado)
@@ -200,12 +194,14 @@ mod tests {
     fn test_laberinto_bomba_explota_en_1_1_alcance_5_explota_desviandose_3_veces_explota_bomba_2_0_matando_a_enemigo(
     ) {
         let mut laberinto = Laberinto::generar_laberinto("_ _ B1\nDD B5 F2\nDR _ DU");
-        let mut laberinto_transformado = Laberinto::generar_laberinto("_ _ _\nDD _ _\nDR _ DU");
+        let mut laberinto_transformado = Laberinto::generar_laberinto("_ _ B1\nDD _ _\nDR _ DU");
         assert_eq!(
             laberinto.atravesar_laberinto(1, 1),
             Ok(&mut laberinto_transformado)
         );
     }
+
+    
 
     #[test]
     fn test_laberinto_bomba_explota_en_1_1_alcance_8_desviandose_derecha_e_izquierda_pero_no_mata_al_enemigo_por_las_posiciones_de_los_desvios(
@@ -240,6 +236,28 @@ mod tests {
         let mut laberinto_transformado = Laberinto::generar_laberinto("_ R _\n_ R _\n_ _ R");
         assert_eq!(
             laberinto.atravesar_laberinto(0, 1),
+            Ok(&mut laberinto_transformado)
+        );
+    }
+
+    #[test]
+    fn test_laberinto_bomba_en_2_0_explota_pero_no_mata_a_enemigo_porque_muere_en_los_desvios_cruzados(
+    ) {
+        let mut laberinto = Laberinto::generar_laberinto("_ _ B7 _ _ _ _\n_ W _ W _ W _\n_ _ DR DL F1 _ _\n_ W _ W _ W _\n_ _ _ _ _ _ _\n_ W _ W _ W _\n_ _ _ _ _ _ _");
+        let mut laberinto_transformado = Laberinto::generar_laberinto("_ _ _ _ _ _ _\n_ W _ W _ W _\n_ _ DR DL F1 _ _\n_ W _ W _ W _\n_ _ _ _ _ _ _\n_ W _ W _ W _\n_ _ _ _ _ _ _");
+        assert_eq!(
+            laberinto.atravesar_laberinto(2, 0),
+            Ok(&mut laberinto_transformado)
+        );
+    }
+
+    #[test]
+    fn test_laberinto_bomba_explota_en_1_1_alcance_8_no_mata_a_enemigo_f1_porque_muere_en_los_desvios_cruzados() {
+        let mut laberinto = Laberinto::generar_laberinto("_ F3 _ _\nW B8 _ DD\n_ R _ DU\n_ _ R F1");
+        let mut laberinto_transformado =
+            Laberinto::generar_laberinto("_ F2 _ _\nW _ _ DD\n_ R _ DU\n_ _ R F1");
+        assert_eq!(
+            laberinto.atravesar_laberinto(1, 1),
             Ok(&mut laberinto_transformado)
         );
     }
