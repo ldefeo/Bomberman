@@ -46,7 +46,7 @@ impl Objeto {
     /// desvia la detonacion, etc.
     pub fn objeto_encontrado(
         laberinto: &mut Laberinto,
-        posicion: (usize,usize),
+        posicion: (usize, usize),
         alcance_desviado: usize,
         estado: i32,
         enemigos_impactados: &mut Vec<(usize, usize)>,
@@ -90,15 +90,9 @@ impl Objeto {
             Objeto::BombaNormal(_box) => {
                 format!("{}{}", _box.clone().identificador(), _box.clone().alcance())
             }
-            Objeto::Roca(_box) => {
-                _box.clone().identificador().to_string()
-            }
-            Objeto::Pared(_box) => {
-                 _box.clone().identificador().to_string()
-            }
-            Objeto::Vacio(_box) => {
-                _box.clone().identificador().to_string()
-            }
+            Objeto::Roca(_box) => _box.clone().identificador().to_string(),
+            Objeto::Pared(_box) => _box.clone().identificador().to_string(),
+            Objeto::Vacio(_box) => _box.clone().identificador().to_string(),
             Objeto::Enemigo(_box) => {
                 format!("{}{}", _box.clone().identificador(), _box.clone().vidas())
             }

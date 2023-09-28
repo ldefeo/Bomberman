@@ -36,7 +36,7 @@ impl Enemigo {
     /// Esta funcion maneja el impacto de la bomba contra el enemigo descontando sus vidas y eliminandolo si su vida llega a 0
     pub fn manejar(
         self,
-        posicion: (usize,usize),
+        posicion: (usize, usize),
         laberinto: &mut Laberinto,
         enemigos_impactados: &mut Vec<(usize, usize)>,
     ) {
@@ -49,7 +49,8 @@ impl Enemigo {
                 vidas
             )));
             if vidas == 0 {
-                laberinto.datos[posicion.1][posicion.0] = Objeto::Vacio(Vacio::generar("_".to_string()));
+                laberinto.datos[posicion.1][posicion.0] =
+                    Objeto::Vacio(Vacio::generar("_".to_string()));
             }
         }
     }

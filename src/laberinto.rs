@@ -32,7 +32,7 @@ impl Laberinto {
     ) -> Result<&mut Self, String> {
         if coord_y < self.datos.len() && coord_x < self.datos[coord_y].len() {
             let resultado = self.chequear_bomba((coord_x, coord_y));
-            match resultado{
+            match resultado {
                 0 => Ok(self),
                 _ => Err("ERROR: no hay bomba en esa posicion".to_string()),
             }
@@ -47,14 +47,10 @@ impl Laberinto {
     }
 
     /// Esta funcion matchea el objeto que hay en la coordenada provista, si hay bomba entonces la detona devolviendo true, sino devuelve false.
-    pub fn chequear_bomba(&mut self, posicion: (usize,usize)) -> usize {
+    pub fn chequear_bomba(&mut self, posicion: (usize, usize)) -> usize {
         match &self.datos[posicion.1][posicion.0] {
             Objeto::BombaNormal(_box) => {
-                self.detonar(
-                    posicion,
-                    _box.clone().alcance(),
-                    BombaNormal::estado(),
-                );
+                self.detonar(posicion, _box.clone().alcance(), BombaNormal::estado());
                 0
             }
             Objeto::BombaTraspaso(_box) => {
@@ -71,19 +67,12 @@ impl Laberinto {
     }
 
     /// Funcion para detonar la bomba moviendose en todas las direcciones.
-    pub fn detonar(
-        &mut self,
-        posicion: (usize,usize),
-        alcance: usize,
-        estado: i32,
-    ) -> &mut Self {
+    pub fn detonar(&mut self, posicion: (usize, usize), alcance: usize, estado: i32) -> &mut Self {
         self.datos[posicion.1][posicion.0] = Objeto::Vacio(Vacio::generar("_".to_string()));
-        Rafaga::iniciar(Direccion::Izquierda,posicion,alcance, estado,self);
-        Rafaga::iniciar(Direccion::Abajo,posicion,alcance, estado,self);
-        Rafaga::iniciar(Direccion::Derecha,posicion,alcance, estado,self);
-        Rafaga::iniciar(Direccion::Arriba,posicion,alcance, estado,self);
+        Rafaga::iniciar(Direccion::Izquierda, posicion, alcance, estado, self);
+        Rafaga::iniciar(Direccion::Abajo, posicion, alcance, estado, self);
+        Rafaga::iniciar(Direccion::Derecha, posicion, alcance, estado, self);
+        Rafaga::iniciar(Direccion::Arriba, posicion, alcance, estado, self);
         self
     }
-
-    
 }

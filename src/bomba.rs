@@ -36,12 +36,8 @@ impl BombaNormal {
     }
 
     /// Esta funcion genera una lista de enemigos impactados y detona la bomba
-    pub fn manejar(self, posicion: (usize,usize), laberinto: &mut Laberinto) {
-        laberinto.detonar(
-            posicion,
-            self.clone().alcance(),
-            BombaNormal::estado(),
-        );
+    pub fn manejar(self, posicion: (usize, usize), laberinto: &mut Laberinto) {
+        laberinto.detonar(posicion, self.clone().alcance(), BombaNormal::estado());
     }
 }
 
@@ -69,11 +65,7 @@ impl BombaTraspaso {
     }
 
     /// Esta funcion genera una lista de enemigos impactados y detona la bomba
-    pub fn manejar(self, posicion: (usize,usize), laberinto: &mut Laberinto) {
-        laberinto.detonar(
-            posicion,
-            self.clone().alcance(),
-            BombaTraspaso::estado(),
-        );
+    pub fn manejar(self, posicion: (usize, usize), laberinto: &mut Laberinto) {
+        laberinto.detonar(posicion, self.clone().alcance(), BombaTraspaso::estado());
     }
 }

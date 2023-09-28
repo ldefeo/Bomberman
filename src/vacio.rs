@@ -18,7 +18,7 @@ impl Vacio {
     }
 
     /// No hace nada con la detonacion, la deja que continue normalmente.
-    pub fn manejar(posicion: (usize,usize), laberinto: &mut Laberinto) {
+    pub fn manejar(posicion: (usize, usize), laberinto: &mut Laberinto) {
         laberinto.datos[posicion.1][posicion.0] = Objeto::Vacio(Vacio::generar("_".to_string()));
     }
 }

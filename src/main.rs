@@ -1,5 +1,5 @@
 use std::fs;
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 use std::{env, num::ParseIntError};
 
 use bomberman::laberinto::Laberinto;
@@ -79,10 +79,10 @@ fn main() {
     let y: Result<usize, ParseIntError> = args[4].parse();
 
     let mut output_formalizado: PathBuf = PathBuf::new();
-    if output.is_dir(){
-        if let Some(nombre_archivo) = input.file_name(){
+    if output.is_dir() {
+        if let Some(nombre_archivo) = input.file_name() {
             output_formalizado = output.join(nombre_archivo);
-        }else{
+        } else {
             eprint!("ERROR: error de concatenacion");
         }
     }
@@ -98,10 +98,16 @@ fn main() {
             );
         }
         (Ok(_), Err(_)) => {
-            escribir_archivo(&output_formalizado, "ERROR: no se puso parsear y".to_string());
+            escribir_archivo(
+                &output_formalizado,
+                "ERROR: no se puso parsear y".to_string(),
+            );
         }
         (Err(_), Ok(_)) => {
-            escribir_archivo(&output_formalizado, "ERROR: no se puso parsear x".to_string());
+            escribir_archivo(
+                &output_formalizado,
+                "ERROR: no se puso parsear x".to_string(),
+            );
         }
     }
 }

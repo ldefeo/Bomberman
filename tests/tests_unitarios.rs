@@ -201,8 +201,6 @@ mod tests {
         );
     }
 
-    
-
     #[test]
     fn test_laberinto_bomba_explota_en_1_1_alcance_8_desviandose_derecha_e_izquierda_pero_no_mata_al_enemigo_por_las_posiciones_de_los_desvios(
     ) {
@@ -252,7 +250,8 @@ mod tests {
     }
 
     #[test]
-    fn test_laberinto_bomba_explota_en_1_1_alcance_8_no_mata_a_enemigo_f1_porque_muere_en_los_desvios_cruzados() {
+    fn test_laberinto_bomba_explota_en_1_1_alcance_8_no_mata_a_enemigo_f1_porque_muere_en_los_desvios_cruzados(
+    ) {
         let mut laberinto = Laberinto::generar_laberinto("_ F3 _ _\nW B8 _ DD\n_ R _ DU\n_ _ R F1");
         let mut laberinto_transformado =
             Laberinto::generar_laberinto("_ F2 _ _\nW _ _ DD\n_ R _ DU\n_ _ R F1");

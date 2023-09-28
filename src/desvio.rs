@@ -33,7 +33,7 @@ impl Desvio {
     /// Esta funcion maneja el desvio mandando la nueva direccion del recorrido, si el alcance de la bomba no se termino.
     pub fn manejar(
         self,
-        posicion: (usize,usize),
+        posicion: (usize, usize),
         alcance_desviado: usize,
         laberinto: &mut Laberinto,
         estado: i32,
@@ -43,7 +43,7 @@ impl Desvio {
             Direccion::desviarse(
                 self.clone().direccion(),
                 posicion,
-                alcance_desviado-1,
+                alcance_desviado - 1,
                 laberinto,
                 estado,
                 enemigos_impactados,
