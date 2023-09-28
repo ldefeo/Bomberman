@@ -41,7 +41,7 @@ impl Generador {
         let num = match numero.parse::<usize>() {
             Ok(parsed_num) => parsed_num,
             Err(_) => {
-                eprintln!("ERROR: mal parseo del numero");
+                eprint!("ERROR: mal parseo del numero");
                 0
             }
         };
