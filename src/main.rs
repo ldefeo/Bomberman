@@ -1,15 +1,16 @@
 use std::fs;
+use std::path::{PathBuf, Path};
 use std::{env, num::ParseIntError};
 
 use bomberman::laberinto::Laberinto;
 
 /// me escribe el archivo de salida.
-fn escribir_archivo(nombre_archivo: &str, contenido: String) {
+fn escribir_archivo(nombre_archivo: &Path, contenido: String) {
     let resultado = fs::write(nombre_archivo, contenido);
     match resultado {
         Ok(resultado) => resultado,
         Err(_) => {
-            eprint!("No se creo el archivo");
+            eprint!("ERROR: no se creo el archivo");
         }
     }
 }
@@ -30,7 +31,7 @@ fn traspasar_laberinto_transformado(
     mut laberinto: Laberinto,
     coord_x: usize,
     coord_y: usize,
-    nombre_archivo: &str,
+    nombre_archivo: &Path,
 ) {
     let resultado = laberinto.atravesar_laberinto(coord_x, coord_y);
     match resultado {
@@ -41,7 +42,7 @@ fn traspasar_laberinto_transformado(
         Err(_) => {
             escribir_archivo(
                 nombre_archivo,
-                "Error al leer el laberinto modificado".to_string(),
+                "ERROR: no se pudo leer bien el laberinto modificado".to_string(),
             );
         }
     }
@@ -49,10 +50,10 @@ fn traspasar_laberinto_transformado(
 
 /// lee el archivo de entrada y genera el laberinto final con traspasar_laberinto_transformado
 fn lectura_archivo(
-    nombre_archivo_entrada: &str,
+    nombre_archivo_entrada: &Path,
     coord_x: usize,
     coord_y: usize,
-    nombre_archivo_salida: &str,
+    nombre_archivo_salida: &Path,
 ) {
     let matriz_lectura = fs::read_to_string(nombre_archivo_entrada);
     match matriz_lectura {
@@ -63,7 +64,7 @@ fn lectura_archivo(
         Err(_) => {
             escribir_archivo(
                 nombre_archivo_salida,
-                "Error al leer el archivo de entrada".to_string(),
+                "ERROR: no se pudo leer bien el archivo".to_string(),
             );
         }
     }
@@ -72,28 +73,35 @@ fn lectura_archivo(
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    let input = &args[1];
-    let output = &args[2];
+    let input = Path::new(&args[1]);
+    let output = Path::new(&args[2]);
     let x: Result<usize, ParseIntError> = args[3].parse();
     let y: Result<usize, ParseIntError> = args[4].parse();
 
-    let output_concatenado = format!("{}{}", output, input);
+    let mut output_formalizado: PathBuf = PathBuf::new();
+    if output.is_dir(){
+        if let Some(nombre_archivo) = input.file_name(){
+            output_formalizado = output.join(nombre_archivo);
+        }else{
+            eprint!("ERROR: error de concatenacion");
+        }
+    }
 
     match (x, y) {
         (Ok(_coord_x), Ok(_coord_y)) => {
-            lectura_archivo(input, _coord_x, _coord_y, &output_concatenado);
+            lectura_archivo(input, _coord_x, _coord_y, &output_formalizado);
         }
         (Err(_), Err(_)) => {
             escribir_archivo(
-                &output_concatenado,
-                "No se pudo parsear correctamente las coordenadas".to_string(),
+                &output_formalizado,
+                "ERROR: no se pudo parsear correctamente las coordenadas".to_string(),
             );
         }
         (Ok(_), Err(_)) => {
-            escribir_archivo(&output_concatenado, "No se puso parsear y".to_string());
+            escribir_archivo(&output_formalizado, "ERROR: no se puso parsear y".to_string());
         }
         (Err(_), Ok(_)) => {
-            escribir_archivo(&output_concatenado, "No se puso parsear x".to_string());
+            escribir_archivo(&output_formalizado, "ERROR: no se puso parsear x".to_string());
         }
     }
 }
