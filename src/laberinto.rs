@@ -58,7 +58,6 @@ impl Laberinto {
                     posicion,
                     _box.clone().alcance(),
                     BombaTraspaso::estado(),
-                    //&mut enemigos_impactados,
                 );
                 0
             }
