@@ -1,5 +1,4 @@
-use crate::{movimiento::Direccion, laberinto::Laberinto};
-
+use crate::{laberinto::Laberinto, movimiento::Direccion};
 
 #[derive(Debug, PartialEq)]
 pub struct Rafaga {

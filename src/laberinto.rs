@@ -3,8 +3,8 @@ use crate::{
     generador::Generador,
     movimiento::Direccion,
     objetos::Objeto,
-    vacio::Vacio,
     rafaga::Rafaga,
+    vacio::Vacio,
 };
 
 #[derive(Debug, PartialEq, Clone)]
