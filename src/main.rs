@@ -1,3 +1,6 @@
+pub mod tests_integracion;
+pub mod tests_unitarios;
+
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::{env, num::ParseIntError};

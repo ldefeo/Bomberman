@@ -54,11 +54,7 @@ impl Laberinto {
                 0
             }
             Objeto::BombaTraspaso(_box) => {
-                self.detonar(
-                    posicion,
-                    _box.clone().alcance(),
-                    BombaTraspaso::estado(),
-                );
+                self.detonar(posicion, _box.clone().alcance(), BombaTraspaso::estado());
                 0
             }
             _ => 1,
