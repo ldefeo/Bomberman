@@ -1,9 +1,10 @@
 use crate::{
     bomba::{BombaNormal, BombaTraspaso},
     generador::Generador,
-    movimiento::{Direccion, Rafaga},
+    movimiento::Direccion,
     objetos::Objeto,
     vacio::Vacio,
+    rafaga::Rafaga,
 };
 
 #[derive(Debug, PartialEq, Clone)]

@@ -9,3 +9,4 @@ pub mod objetos;
 pub mod pared;
 pub mod roca;
 pub mod vacio;
+pub mod rafaga;
